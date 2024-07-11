@@ -1,0 +1,10 @@
+name: "Java: Build"
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  java-build:
+    uses: valitydev/java-workflow/.github/workflows/maven-thrift-build.yml@v3
