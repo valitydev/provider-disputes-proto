@@ -2,6 +2,7 @@ namespace java dev.vality.disputes
 include "proto/domain.thrift"
 
 typedef string ID
+typedef string MIMEType
 
 struct Amount {
     1: required domain.Amount value
@@ -18,7 +19,7 @@ struct TransactionContext {
 
 struct DisputeParams {
     1: required TransactionContext transactionContext
-    2: required list<Check> checks
+    2: required list<Attachment> attachments
     3: optional Amount amount
     4: optional ID requisiteId
     5: optional string reason
@@ -29,25 +30,15 @@ struct DisputeContext {
     2: required domain.ProxyOptions terminalOptions
 }
 
-union Check {
-    1: Base64EncodedCheck base64EncodedCheck
+union Attachment {
+    1: Base64EncodedAttachment base64EncodedAttachment
 }
 
-struct Base64EncodedCheck {
+struct Base64EncodedAttachment {
     1: required string base64EncodedSource
-    2: optional CheckType checkType
+    2: optional MIMEType mimeType
     3: optional string name
 }
-
-union CheckType {
-    1: CheckSourceTypeJpg jpg
-    2: CheckSourceTypePng png
-    3: CheckSourceTypePdf pdf
-}
-
-struct CheckSourceTypePng {}
-struct CheckSourceTypeJpg {}
-struct CheckSourceTypePdf {}
 
 union TransactionResult {
     1: TransactionStatusResult statusResult
@@ -89,6 +80,8 @@ struct DisputeCallback {
     2: optional TransactionStatusResult transactionStatusResult
     3: optional ID disputeId
     4: optional DisputeStatusResult disputeStatusResult
+    5: optional Amount amount
+    6: optional string reason
 }
 
 exception MethodNotSupported {}
